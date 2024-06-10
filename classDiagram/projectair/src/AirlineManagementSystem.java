@@ -1,10 +1,44 @@
 import javax.swing.*;
+import java.util.Scanner;
+
 
 public class AirlineManagementSystem {
     public static void main(String[] args) {
         // Sample data
-        Airplane airplane = new Airplane(1, "Boeing 747", "Boeing", 400, true);
-        Flight flight = new Flight(101, "AA123", "10:00 AM", "1:00 PM", "New York", "Los Angeles", airplane);
+        Scanner scanner = new Scanner(System.in);
+        String message = "Welcome to Air UTM Booking System !";
+        JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+
+
+        String message1 = "[1] Display Airline List\n"
+                        + "[2] Display Flight List\n"
+                        + "[3] Book a Flight";
+
+        String optionInput = JOptionPane.showInputDialog(null, message1, "Select the option:");
+        int option = Integer.parseInt(optionInput);
+
+
+        Flight flight = new Flight(1, "AF123", "08:00", "10:00", "Paris", "New York");
+
+        // Create instances of the necessary classes
+        Airplane airplane1 = new Airplane(201, "Boeing 737-800", "Malaysia Airlines", 189, true);
+        Airplane airplane2 = new Airplane(202, "Airbus A320", "AirAsia", 180, true);
+        Airplane airplane3 = new Airplane(203, "ATR 72-600", "Firefly", 72, true);
+        Airplane airplane4 = new Airplane(204, "Boeing 737-800F", "MASkargo", 20000, true);
+        Airplane airplane5 = new Airplane(205, "Cessna Citation Mustang", "Berjaya Air", 4, true);
+
+        flight.addAirplane(airplane1);
+        flight.addAirplane(airplane2);
+        flight.addAirplane(airplane3);
+        flight.addAirplane(airplane4);
+        flight.addAirplane(airplane5);
+
+        String displayAirplane = flight.displayAllAirplanes();
+        JOptionPane.showMessageDialog(null, displayAirplane, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+
+
+
+
         Customer customer = new Customer("John Doe", "Male", 30, "ID12345", "123-456-7890", "P12345678");
         Booking booking = new Booking(201, "2024-06-04", "Economy", flight, customer);
         Baggage baggage = new Baggage(301, 23.5, "Checked", booking);
