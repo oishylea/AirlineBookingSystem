@@ -45,7 +45,7 @@ public class Airplane {
     public void setPlaneAvailability(boolean planeAvailability) {
         this.planeAvailability = planeAvailability; }
 
-    public void display() {
+    public String display() {
         System.out.println("Plane ID: " + planeId);
         System.out.println("Plane Model: " + planeModel);
         System.out.println("Plane Manufacturer: " + planeFacturer);

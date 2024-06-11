@@ -33,11 +33,11 @@ public class Flight {
         StringBuilder sb = new StringBuilder();
         sb.append("Airplanes in Flight ").append(this.getFlightId()).append(":\n\n");
         for (Airplane airplane : airplanes) {
-            sb.append("Airplane ID: ").append(airplane.getPlaneId())
-              .append(", Model: ").append(airplane.getPlaneModel())
-              .append(", Manufacturer: ").append(airplane.getPlaneFacturer())
-              .append(", Capacity: ").append(airplane.getPlaneCapacity())
-              .append(", Availability: ").append(airplane.getPlaneAvailability())
+            sb.append("Airplane ID:\t").append(airplane.getPlaneId()) 
+              .append(", Model:\t").append(airplane.getPlaneModel())
+              .append(", Manufacturer:\t").append(airplane.getPlaneFacturer())
+              .append(", Capacity:\t").append(airplane.getPlaneCapacity())
+              .append(", Availability:\t").append(airplane.getPlaneAvailability())
               .append("\n");
         }
         return sb.toString();

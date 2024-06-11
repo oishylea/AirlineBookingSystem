@@ -1,14 +1,33 @@
 import javax.swing.*;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class AirlineManagementSystem {
     public static void main(String[] args) {
-        // Sample data
+
+
+        Flight flight1 = new Flight(1, "AF123", "08:00", "10:00", "Johor", "KLIA 2");
+        Flight flight2 = new Flight(2, "ED412", "08:00", "10:30", "KLIA 2", "Kedah");
+
+        Airplane airplane1 = new Airplane(201, "Boeing 737-800", "Malaysia Airlines", 189, true);
+        Airplane airplane2 = new Airplane(202, "Airbus A320", "AirAsia", 180, true);
+        Airplane airplane3 = new Airplane(203, "ATR 72-600", "Firefly", 72, true);
+        Airplane airplane4 = new Airplane(204, "Boeing 737-800F", "MASkargo", 200, true);
+        Airplane airplane5 = new Airplane(205, "Cessna Citation Mustang", "Berjaya Air", 4, true);
+
+        flight1.addAirplane(airplane1);
+        flight1.addAirplane(airplane2);
+        flight2.addAirplane(airplane3);
+        flight2.addAirplane(airplane4);
+        flight2.addAirplane(airplane5);
+
+
+
+
         Scanner scanner = new Scanner(System.in);
         String message = "Welcome to Air UTM Booking System !";
         JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-
 
         String message1 = "[1] Display Airline List\n"
                         + "[2] Display Flight List\n"
@@ -17,35 +36,39 @@ public class AirlineManagementSystem {
         String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
         int option = Integer.parseInt(optionInput);
 
+        if (option == 1){
 
-        Flight flight = new Flight(1, "AF123", "08:00", "10:00", "Paris", "New York");
+            String displayAirplane1 = flight1.displayAllAirplanes();
+            String displayAirplane2 = flight2.displayAllAirplanes();
 
-        // Create instances of the necessary classes
-        Airplane airplane1 = new Airplane(201, "Boeing 737-800", "Malaysia Airlines", 189, true);
-        Airplane airplane2 = new Airplane(202, "Airbus A320", "AirAsia", 180, true);
-        Airplane airplane3 = new Airplane(203, "ATR 72-600", "Firefly", 72, true);
-        Airplane airplane4 = new Airplane(204, "Boeing 737-800F", "MASkargo", 20000, true);
-        Airplane airplane5 = new Airplane(205, "Cessna Citation Mustang", "Berjaya Air", 4, true);
+            JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+     
+        }
 
-        flight.addAirplane(airplane1);
-        flight.addAirplane(airplane2);
-        flight.addAirplane(airplane3);
-        flight.addAirplane(airplane4);
-        flight.addAirplane(airplane5);
+        else if (option ==2){
 
-        String displayAirplane = flight.displayAllAirplanes();
-        JOptionPane.showMessageDialog(null, displayAirplane, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+            StringBuilder airplaneInfo = new StringBuilder();
 
+            for (Flight flight : new Flight[]{flight1, flight2}) {
+                airplaneInfo.append("Flight ").append(flight.getFlightNumber()).append(" : ").append(flight.getDepartureLocation()+" -> ").append(flight.getArrivalLocation()+"\n");
+                for (Airplane airplane : flight.getAirplanes()) {
+                    airplaneInfo.append("- ").append(airplane.getPlaneId()).append(" (").append(airplane.getPlaneFacturer()).append(", Capacity: ").append(airplane.getPlaneCapacity()).append(")\n");
+                }
+                airplaneInfo.append("\n");
+            }
 
+            JOptionPane.showMessageDialog(null, airplaneInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                
+        }
 
 
         Customer customer = new Customer("John Doe", "Male", 30, "ID12345", "123-456-7890", "P12345678");
-        Booking booking = new Booking(201, "2024-06-04", "Economy", flight, customer);
+        Booking booking = new Booking(201, "2024-06-04", "Economy", flight1, customer);
         Baggage baggage = new Baggage(301, 23.5, "Checked", booking);
         Payment payment = new Payment(401, 500.00, "2024-06-01", "Credit Card", booking);
         Meal meal = new Meal(501, "Vegetarian", "None", 15.00, customer);
         Ticket ticket = new Ticket(601, "12A", "Economy", 500.00, booking);
-        Gate gate = new Gate(701, "G12", "Terminal 3", flight);
+        Gate gate = new Gate(701, "G12", "Terminal 3", flight1);
         Pilot pilot = new Pilot("Alice Smith", "Female", 45, "ID67890", "987-654-3210", "LN12345", 20);
         CrewMember crewMember = new CrewMember("Bob Johnson", "Male", 35, "ID54321", "654-321-9876", "Flight Attendant");
 
