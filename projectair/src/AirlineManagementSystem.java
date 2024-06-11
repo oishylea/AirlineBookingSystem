@@ -38,11 +38,14 @@ public class AirlineManagementSystem {
 
         if (option == 1){
 
+
+
             String displayAirplane1 = flight1.displayAllAirplanes();
             String displayAirplane2 = flight2.displayAllAirplanes();
 
             JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-     
+            JOptionPane.showMessageDialog(null, displayAirplane2, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
         else if (option ==2){
