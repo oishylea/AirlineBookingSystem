@@ -38,13 +38,36 @@ public class AirlineManagementSystem {
 
         if (option == 1){
 
+            String[] options = {"Flight 1", "Flight 2"};
+            JComboBox<String> optionList = new JComboBox<>(options);
+            optionList.setSelectedIndex(0);
+            
+            int result = JOptionPane.showOptionDialog(null, optionList, "Air UTM Booking System",
+                                  JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            
+            if (result == JOptionPane.OK_OPTION) {
+                // User selected an option from the dropdown
+                int selectedIndex = optionList.getSelectedIndex();
+                String selectedOption = options[selectedIndex];
+                
+                if (selectedOption.equals("Flight 1")) {
+                    String displayAirplane1 = flight1.displayAllAirplanes();
+                    JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
+                } else if (selectedOption.equals("Flight 2")) {
+                    String displayAirplane2 = flight2.displayAllAirplanes();
 
-            String displayAirplane1 = flight1.displayAllAirplanes();
-            String displayAirplane2 = flight2.displayAllAirplanes();
+                    JOptionPane.showMessageDialog(null, displayAirplane2, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
-            JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-            JOptionPane.showMessageDialog(null, displayAirplane2, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Handle unexpected option selection
+                    System.out.println("Unknown option selected");
+                }
+            } else {
+                // User canceled the dialog
+                System.out.println("Dialog canceled");
+            }
+        
 
         }
 
