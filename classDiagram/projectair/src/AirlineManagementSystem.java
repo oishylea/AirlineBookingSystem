@@ -14,7 +14,7 @@ public class AirlineManagementSystem {
                         + "[2] Display Flight List\n"
                         + "[3] Book a Flight";
 
-        String optionInput = JOptionPane.showInputDialog(null, message1, "Select the option:");
+        String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
         int option = Integer.parseInt(optionInput);
 
 
@@ -50,18 +50,18 @@ public class AirlineManagementSystem {
         CrewMember crewMember = new CrewMember("Bob Johnson", "Male", 35, "ID54321", "654-321-9876", "Flight Attendant");
 
         // Display booking information
-        String bookingInfo = "Booking ID: " + booking.getBookingId() +
-                             "\nBooking Date: " + booking.getBookingDate() +
-                             "\nSeat Category: " + booking.getSeatCategory() +
-                             "\nFlight Number: " + booking.getFlight().getFlightNumber() +
-                             "\nCustomer Name: " + booking.getCustomer().getName() +
-                             "\nBaggage Weight: " + baggage.getWeight() +
-                             "\nPayment Amount: $" + payment.getAmount() +
-                             "\nMeal Type: " + meal.getMealType() +
-                             "\nTicket Seat Number: " + ticket.getSeatNumber() +
-                             "\nGate Number: " + gate.getGateNumber() +
-                             "\nPilot Name: " + pilot.getName() +
-                             "\nCrew Member Role: " + crewMember.getRole();
+        String bookingInfo = "Booking ID:\t\t" + booking.getBookingId() +
+                             "\nBooking Date:\t" + booking.getBookingDate() +
+                             "\nSeat Category:\t" + booking.getSeatCategory() +
+                             "\nFlight Number:\t" + booking.getFlight().getFlightNumber() +
+                             "\nCustomer Name:\t" + booking.getCustomer().getName() +
+                             "\nBaggage Weight:\t" + baggage.getWeight() +
+                             "\nPayment Amount:\t$" + payment.getAmount() +
+                             "\nMeal Type:\t" + meal.getMealType() +
+                             "\nTicket Seat Number:\t" + ticket.getSeatNumber() +
+                             "\nGate Number:\t" + gate.getGateNumber() +
+                             "\nPilot Name:\t" + pilot.getName() +
+                             "\nCrew Member Role:\t" + crewMember.getRole();
         
         JOptionPane.showMessageDialog(null, bookingInfo, "Booking Information", JOptionPane.INFORMATION_MESSAGE);
     }
