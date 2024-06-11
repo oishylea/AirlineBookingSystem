@@ -17,6 +17,10 @@ public class CrewMember extends Person{
         this.role = role;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     public void printpersondata(){
         System.out.println("\n===== Crew Details =====");
 
