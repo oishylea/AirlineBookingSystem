@@ -1,11 +1,11 @@
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.io.IOException;
 
 public class AirlineManagementSystem {
     public static void main(String[] args) {
-
 
         Flight flight1 = new Flight(1, "AF123", "08:00", "10:00", "Johor", "KLIA 2");
         Flight flight2 = new Flight(2, "ED412", "08:00", "10:30", "KLIA 2", "Kedah");
@@ -22,96 +22,139 @@ public class AirlineManagementSystem {
         flight2.addAirplane(airplane4);
         flight2.addAirplane(airplane5);
 
+        List<Customer> customers = new ArrayList<>();
+        List<Pilot> pilots = new ArrayList<>();
+        List<CrewMember> crewMembers = new ArrayList<>();
 
+        try {
+            customers = Customer.loadCustomers("C:\\Users\\JEGANATH\\OneDrive\\Documents\\GitHub\\oop\\projectair\\src\\Customers.txt");
+            pilots = Pilot.loadPilots("C:\\Users\\JEGANATH\\OneDrive\\Documents\\GitHub\\oop\\projectair\\src\\pilots.txt");
+            crewMembers = CrewMember.loadCrewMembers("C:\\Users\\JEGANATH\\OneDrive\\Documents\\GitHub\\oop\\projectair\\src\\crew.text");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage());
+        }
 
+        try (Scanner scanner = new Scanner(System.in)) {  // Try-with-resources statement
+            String message = "Welcome to Air UTM Booking System !";
+            JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
-        Scanner scanner = new Scanner(System.in);
-        String message = "Welcome to Air UTM Booking System !";
-        JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+            String message1 = "[1] Display Airline List\n"
+                    + "[2] Display Flight List\n"
+                    + "[3] Book a Flight\n"
+                    + "[4] View Customer List\n"
+                    + "[5] View Pilot List\n"
+                    + "[6] View Crew Member List";
 
-        String message1 = "[1] Display Airline List\n"
-                        + "[2] Display Flight List\n"
-                        + "[3] Book a Flight";
+            String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
+            int option = Integer.parseInt(optionInput);
 
-        String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
-        int option = Integer.parseInt(optionInput);
+            if (option == 1) {
 
-        if (option == 1){
+                String[] options = {"Flight 1", "Flight 2"};
+                JComboBox<String> optionList = new JComboBox<>(options);
+                optionList.setSelectedIndex(0);
 
-            String[] options = {"Flight 1", "Flight 2"};
-            JComboBox<String> optionList = new JComboBox<>(options);
-            optionList.setSelectedIndex(0);
-            
-            int result = JOptionPane.showOptionDialog(null, optionList, "Air UTM Booking System",
-                                  JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            
-            if (result == JOptionPane.OK_OPTION) {
-                // User selected an option from the dropdown
-                int selectedIndex = optionList.getSelectedIndex();
-                String selectedOption = options[selectedIndex];
-                
-                if (selectedOption.equals("Flight 1")) {
-                    String displayAirplane1 = flight1.displayAllAirplanes();
-                    JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                int result = JOptionPane.showOptionDialog(null, optionList, "Air UTM Booking System",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-                } else if (selectedOption.equals("Flight 2")) {
-                    String displayAirplane2 = flight2.displayAllAirplanes();
+                if (result == JOptionPane.OK_OPTION) {
+                    // User selected an option from the dropdown
+                    int selectedIndex = optionList.getSelectedIndex();
+                    String selectedOption = options[selectedIndex];
 
-                    JOptionPane.showMessageDialog(null, displayAirplane2, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                    if (selectedOption.equals("Flight 1")) {
+                        String displayAirplane1 = flight1.displayAllAirplanes();
+                        JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
+                    } else if (selectedOption.equals("Flight 2")) {
+                        String displayAirplane2 = flight2.displayAllAirplanes();
+                        JOptionPane.showMessageDialog(null, displayAirplane2, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // Handle unexpected option selection
+                        System.out.println("Unknown option selected");
+                    }
                 } else {
-                    // Handle unexpected option selection
-                    System.out.println("Unknown option selected");
+                    // User canceled the dialog
+                    System.out.println("Dialog canceled");
                 }
-            } else {
-                // User canceled the dialog
-                System.out.println("Dialog canceled");
-            }
-        
+            } else if (option == 2) {
 
-        }
+                StringBuilder airplaneInfo = new StringBuilder();
 
-        else if (option ==2){
-
-            StringBuilder airplaneInfo = new StringBuilder();
-
-            for (Flight flight : new Flight[]{flight1, flight2}) {
-                airplaneInfo.append("Flight ").append(flight.getFlightNumber()).append(" : ").append(flight.getDepartureLocation()+" -> ").append(flight.getArrivalLocation()+"\n");
-                for (Airplane airplane : flight.getAirplanes()) {
-                    airplaneInfo.append("- ").append(airplane.getPlaneId()).append(" (").append(airplane.getPlaneFacturer()).append(", Capacity: ").append(airplane.getPlaneCapacity()).append(")\n");
+                for (Flight flight : new Flight[]{flight1, flight2}) {
+                    airplaneInfo.append("Flight ").append(flight.getFlightNumber()).append(" : ").append(flight.getDepartureLocation()).append(" -> ").append(flight.getArrivalLocation()).append("\n");
+                    for (Airplane airplane : flight.getAirplanes()) {
+                        airplaneInfo.append("- ").append(airplane.getPlaneId()).append(" (").append(airplane.getPlaneFacturer()).append(", Capacity: ").append(airplane.getPlaneCapacity()).append(")\n");
+                    }
+                    airplaneInfo.append("\n");
                 }
-                airplaneInfo.append("\n");
+
+                JOptionPane.showMessageDialog(null, airplaneInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+
+            } else if (option == 3) {
+                // Booking a flight
+                String flightNumber = JOptionPane.showInputDialog("Enter Flight Number:");
+                Flight selectedFlight = null;
+
+                for (Flight flight : new Flight[]{flight1, flight2}) {
+                    if (flight.getFlightNumber().equals(flightNumber)) {
+                        selectedFlight = flight;
+                        break;
+                    }
+                }
+
+                if (selectedFlight != null) {
+                    String customerName = JOptionPane.showInputDialog("Enter your name:");
+                    String seatNumber = JOptionPane.showInputDialog("Enter seat number:");
+                    Customer customer = findCustomerByName(customers, customerName);
+                    if (customer == null) {
+                        JOptionPane.showMessageDialog(null, "Customer not found.");
+                        return;
+                    }
+                    Ticket ticket = new Ticket(1, seatNumber, "Economy", 299.99, null);  // Temporary null for booking
+                    Booking booking = new Booking(1, "2024-06-04", "Economy", selectedFlight, customer);
+                    ticket.setBooking(booking);  // Set the booking for the ticket
+
+                    JOptionPane.showMessageDialog(null, "Flight booked successfully for " + customer.getName() +
+                            "\nFlight Number: " + selectedFlight.getFlightNumber() +
+                            "\nSeat Number: " + ticket.getSeatNumber());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Flight not found.");
+                }
+            } else if (option == 4) {
+                // View Customer List
+                StringBuilder customerInfo = new StringBuilder("Customer List:\n");
+                for (Customer customer : customers) {
+                    customerInfo.append(customer.getName()).append(" - ").append(customer.getPassportNumber()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, customerInfo.toString(), "Customer List", JOptionPane.INFORMATION_MESSAGE);
+
+            } else if (option == 5) {
+                // View Pilot List
+                StringBuilder pilotInfo = new StringBuilder("Pilot List:\n");
+                for (Pilot pilot : pilots) {
+                    pilotInfo.append(pilot.getName()).append(" - ").append(pilot.getLicenseNumber()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, pilotInfo.toString(), "Pilot List", JOptionPane.INFORMATION_MESSAGE);
+
+            } else if (option == 6) {
+                // View Crew Member List
+                StringBuilder crewInfo = new StringBuilder("Crew Member List:\n");
+                for (CrewMember crewMember : crewMembers) {
+                    crewInfo.append(crewMember.getName()).append(" - ").append(crewMember.getRole()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, crewInfo.toString(), "Crew Member List", JOptionPane.INFORMATION_MESSAGE);
             }
+        }  // The scanner will be closed automatically here
+    }
 
-            JOptionPane.showMessageDialog(null, airplaneInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-                
+    private static Customer findCustomerByName(List<Customer> customers, String name) {
+        for (Customer customer : customers) {
+            if (customer.getName().equalsIgnoreCase(name)) {
+                return customer;
+            }
         }
-
-
-        Customer customer = new Customer("John Doe", "Male", 30, "ID12345", "123-456-7890", "P12345678");
-        Booking booking = new Booking(201, "2024-06-04", "Economy", flight1, customer);
-        Baggage baggage = new Baggage(301, 23.5, "Checked", booking);
-        Payment payment = new Payment(401, 500.00, "2024-06-01", "Credit Card", booking);
-        Meal meal = new Meal(501, "Vegetarian", "None", 15.00, customer);
-        Ticket ticket = new Ticket(601, "12A", "Economy", 500.00, booking);
-        Gate gate = new Gate(701, "G12", "Terminal 3", flight1);
-        Pilot pilot = new Pilot("Alice Smith", "Female", 45, "ID67890", "987-654-3210", "LN12345", 20);
-        CrewMember crewMember = new CrewMember("Bob Johnson", "Male", 35, "ID54321", "654-321-9876", "Flight Attendant");
-
-        // Display booking information
-        String bookingInfo = "Booking ID:\t\t" + booking.getBookingId() +
-                             "\nBooking Date:\t" + booking.getBookingDate() +
-                             "\nSeat Category:\t" + booking.getSeatCategory() +
-                             "\nFlight Number:\t" + booking.getFlight().getFlightNumber() +
-                             "\nCustomer Name:\t" + booking.getCustomer().getName() +
-                             "\nBaggage Weight:\t" + baggage.getWeight() +
-                             "\nPayment Amount:\t$" + payment.getAmount() +
-                             "\nMeal Type:\t" + meal.getMealType() +
-                             "\nTicket Seat Number:\t" + ticket.getSeatNumber() +
-                             "\nGate Number:\t" + gate.getGateNumber() +
-                             "\nPilot Name:\t" + pilot.getName() +
-                             "\nCrew Member Role:\t" + crewMember.getRole();
-        
-        JOptionPane.showMessageDialog(null, bookingInfo, "Booking Information", JOptionPane.INFORMATION_MESSAGE);
+        return null;
     }
 }
