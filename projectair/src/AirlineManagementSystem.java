@@ -64,7 +64,8 @@ public class AirlineManagementSystem {
                     + "[3] Book a Flight\n"
                     + "[4] View Customer List\n"
                     + "[5] View Pilot List\n"
-                    + "[6] View Crew Member List";
+                    + "[6] View Crew Member List\n"
+                    + "[7] Meal";
 
             String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
             int option = Integer.parseInt(optionInput);
@@ -268,7 +269,7 @@ public class AirlineManagementSystem {
                 for (Customer customer : customers) {
                     customerInfo.append(customer.getName()).append(" - ").append(customer.getPassportNumber()).append("\n");
                 }
-                JOptionPane.showMessageDialog(null, customerInfo.toString(), "Customer List", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, customerInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (option == 5) {
                 // View Pilot List
@@ -276,7 +277,7 @@ public class AirlineManagementSystem {
                 for (Pilot pilot : pilots) {
                     pilotInfo.append(pilot.getName()).append(" - ").append(pilot.getLicenseNumber()).append("\n");
                 }
-                JOptionPane.showMessageDialog(null, pilotInfo.toString(), "Pilot List", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, pilotInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (option == 6) {
                 // View Crew Member List
@@ -284,7 +285,16 @@ public class AirlineManagementSystem {
                 for (CrewMember crewMember : crewMembers) {
                     crewInfo.append(crewMember.getName()).append(" - ").append(crewMember.getRole()).append("\n");
                 }
-                JOptionPane.showMessageDialog(null, crewInfo.toString(), "Crew Member List", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, crewInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            else if (option == 7) {
+                // View Crew Member List
+                StringBuilder crewInfo = new StringBuilder("Crew Member List:\n");
+                for (CrewMember crewMember : crewMembers) {
+                    crewInfo.append(crewMember.getName()).append(" - ").append(crewMember.getRole()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, crewInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
             }
         }  // The scanner will be closed automatically here
     }
