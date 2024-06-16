@@ -42,6 +42,12 @@ public class AirlineManagementSystem {
         Gate gate1 = new Gate (01,"A01","A",flight1);
         Gate gate2 = new Gate (02,"A02","A",flight2);
 
+        Customer customer1 = new Customer("John Doe", "Male", 28, "C001", "5551234567", "A12345678");
+
+        Meal meal1 = new Meal(1001, "Vegetarian Curry", "Vegan, Gluten-free", 12.99, customer1);
+        Meal meal2 = new Meal(2002, "Grilled Salmon", "Dairy-free", 19.50, customer1);
+        Meal meal3 = new Meal(3003, "Chicken Stir-fry", "Nut-free", 15.75, customer1);
+
         List<Customer> customers = new ArrayList<>();
         List<Pilot> pilots = new ArrayList<>();
         List<CrewMember> crewMembers = new ArrayList<>();
@@ -291,8 +297,8 @@ public class AirlineManagementSystem {
             else if (option == 7) {
                 // View Crew Member List
                 StringBuilder mealInfo = new StringBuilder("Meal List:\n");
-                for (CrewMember crewMember : crewMembers) {
-                    mealInfo.append(crewMember.getName()).append(" - ").append(crewMember.getRole()).append("\n");
+                for (Meal crewMember : new Meal[]{meal1, meal2}) {
+                    mealInfo.append(crewMember.getMealId()).append(" - ").append(crewMember.getMealType()).append("\n");
                 }
                 JOptionPane.showMessageDialog(null, mealInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
             }
