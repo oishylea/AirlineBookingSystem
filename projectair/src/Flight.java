@@ -13,6 +13,7 @@ public class Flight {
     // Constructors
     public Flight() {
         this.airplanes = new ArrayList<>();
+
     }
 
     public Flight(int flightId, String flightNumber, String departureTime, String arrivalTime, String departureLocation, String arrivalLocation) {

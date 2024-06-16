@@ -15,13 +15,27 @@ public class Gate {
     }
 
     // Getters and Setters
-    public int getGateId() { return gateId; }
-    public String getGateNumber() { return gateNumber; }
-    public String getTerminal() { return terminal; }
-    public Flight getFlight() { return flight; }
+    public int getGateId() { 
+        return gateId; }
+
+    public String getGateNumber() {
+        return gateNumber; }
+
+    public String getTerminal() { 
+        return terminal; }
+
+    public Flight getFlight() {
+         return flight; }
     
-    public void setGateId(int gateId) { this.gateId = gateId; }
-    public void setGateNumber(String gateNumber) { this.gateNumber = gateNumber; }
-    public void setTerminal(String terminal) { this.terminal = terminal; }
-    public void setFlight(Flight flight) { this.flight = flight; }
+    public void setGateId(int gateId) { 
+        this.gateId = gateId; }
+
+    public void setGateNumber(String gateNumber) { 
+        this.gateNumber = gateNumber; }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal; }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight; }
 }

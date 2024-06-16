@@ -10,17 +10,31 @@ public class AirlineManagementSystem {
         Flight flight1 = new Flight(1, "AF123", "08:00", "10:00", "Johor", "KLIA 2");
         Flight flight2 = new Flight(2, "ED412", "08:00", "10:30", "KLIA 2", "Kedah");
 
-        Airplane airplane1 = new Airplane(201, "Boeing 737-800", "Malaysia Airlines", 189, true);
+        Airplane airplane1 = new Airplane(201, "Boeing 737-800", "Firefly", 189, true);
         Airplane airplane2 = new Airplane(202, "Airbus A320", "AirAsia", 180, true);
         Airplane airplane3 = new Airplane(203, "ATR 72-600", "Firefly", 72, true);
-        Airplane airplane4 = new Airplane(204, "Boeing 737-800F", "MASkargo", 200, true);
-        Airplane airplane5 = new Airplane(205, "Cessna Citation Mustang", "Berjaya Air", 4, true);
+        Airplane airplane4 = new Airplane(204, "Boeing 737-800F", "Firefly", 200, true);
+        Airplane airplane5 = new Airplane(205, "Cessna Citation Mustang", "AirAsia", 4, true);
+
+        List<Airplane> airAsiaAirplanes = new ArrayList<>();
+        List<Airplane> fireflyAirplanes = new ArrayList<>();
+        for (Airplane airplane : new Airplane[] {airplane1, airplane2, airplane3, airplane4, airplane5}) {
+            if (airplane.getPlaneFacturer().equals("AirAsia")) {
+                airAsiaAirplanes.add(airplane);
+            } else if (airplane.getPlaneFacturer().equals("Firefly")) {
+                fireflyAirplanes.add(airplane);
+            }
+        }
 
         flight1.addAirplane(airplane1);
         flight1.addAirplane(airplane2);
         flight2.addAirplane(airplane3);
         flight2.addAirplane(airplane4);
         flight2.addAirplane(airplane5);
+
+
+        Gate gate1 = new Gate (01,"A01","A",flight1);
+        Gate gate2 = new Gate (02,"A02","A",flight2);
 
         List<Customer> customers = new ArrayList<>();
         List<Pilot> pilots = new ArrayList<>();
@@ -51,7 +65,7 @@ public class AirlineManagementSystem {
 
             if (option == 1) {
 
-                String[] options = {"Flight 1", "Flight 2"};
+                String[] options = {"AirAsia", "Firefly"};
                 JComboBox<String> optionList = new JComboBox<>(options);
                 optionList.setSelectedIndex(0);
 
@@ -63,14 +77,28 @@ public class AirlineManagementSystem {
                     int selectedIndex = optionList.getSelectedIndex();
                     String selectedOption = options[selectedIndex];
 
-                    if (selectedOption.equals("Flight 1")) {
-                        String displayAirplane1 = flight1.displayAllAirplanes();
-                        JOptionPane.showMessageDialog(null, displayAirplane1, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-
-                    } else if (selectedOption.equals("Flight 2")) {
-                        String displayAirplane2 = flight2.displayAllAirplanes();
-                        JOptionPane.showMessageDialog(null, displayAirplane2, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
+                    if (selectedOption.equals("AirAsia")) {
+                        StringBuilder displayAirplane1 = new StringBuilder();
+                        for (Airplane airplane : airAsiaAirplanes) {
+                            displayAirplane1.append("ID: ").append(airplane.getPlaneId())
+                                           .append(", Model: ").append(airplane.getPlaneModel())
+                                           .append(", Capacity: ").append(airplane.getPlaneCapacity())
+                                           .append(", Active: ").append(airplane.getPlaneAvailability())
+                                           .append("\n");
+                        }
+                        JOptionPane.showMessageDialog(null, displayAirplane1.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (selectedOption.equals("Firefly")) {
+                        StringBuilder displayAirplane2 = new StringBuilder();
+                        for (Airplane airplane : fireflyAirplanes) {
+                            displayAirplane2.append("ID: ").append(airplane.getPlaneId())
+                            .append(", Model: ").append(airplane.getPlaneModel())
+                            .append(", Capacity: ").append(airplane.getPlaneCapacity())
+                            .append(", Active: ").append(airplane.getPlaneAvailability())
+                            .append("\n");
+                        }
+                        JOptionPane.showMessageDialog(null, displayAirplane2.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                    }
+            else {
                         // Handle unexpected option selection
                         System.out.println("Unknown option selected");
                     }
