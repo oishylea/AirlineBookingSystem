@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
@@ -10,14 +11,15 @@ import java.awt.BorderLayout;
 public class AirlineManagementSystem {
     public static void main(String[] args) {
 
-        Flight flight1 = new Flight(1, "AF123", "08:00", "10:00", "Johor", "KLIA 2");
-        Flight flight2 = new Flight(2, "ED412", "08:00", "10:30", "KLIA 2", "Kedah");
+        Flight flight1 = new Flight(1, "AF123", "12:00", "14:30", "Johor", "KLIA 2");
+        Flight flight2 = new Flight(2, "ED412", "08:00", "10:30", "KLIA 2", "Johor");
+        Flight flight3 = new Flight(3, "FG254", "11:30", "14:00", "KLIA 2", "Johor");
 
-        Airplane airplane1 = new Airplane(201, "Boeing 737-800", "Firefly", 189, true);
-        Airplane airplane2 = new Airplane(202, "Airbus A320", "AirAsia", 180, true);
-        Airplane airplane3 = new Airplane(203, "ATR 72-600", "Firefly", 72, true);
-        Airplane airplane4 = new Airplane(204, "Boeing 737-800F", "Firefly", 200, true);
-        Airplane airplane5 = new Airplane(205, "Cessna Citation Mustang", "AirAsia", 4, true);
+        Airplane airplane1 = new Airplane(101, "Airbus A320-200", "AirAsia", 180, true);
+        Airplane airplane2 = new Airplane(102, "Airbus A321neo", "AirAsia", 236, true);
+        Airplane airplane3 = new Airplane(103, "Boeing 737 MAX 8", "AirAsia", 178, true);
+        Airplane airplane4 = new Airplane(104, "ATR 72-600", "Firefly", 72, true);
+        Airplane airplane5 = new Airplane(105, "Boeing 737-800", "Firefly", 189, true);
 
         List<Airplane> airAsiaAirplanes = new ArrayList<>();
         List<Airplane> fireflyAirplanes = new ArrayList<>();
@@ -34,7 +36,8 @@ public class AirlineManagementSystem {
         flight2.addAirplane(airplane3);
         flight2.addAirplane(airplane4);
         flight2.addAirplane(airplane5);
-
+        flight3.addAirplane(airplane1);
+        flight3.addAirplane(airplane2);
 
         Gate gate1 = new Gate (01,"A01","A",flight1);
         Gate gate2 = new Gate (02,"A02","A",flight2);
@@ -85,7 +88,7 @@ public class AirlineManagementSystem {
 
 
                 if (result == JOptionPane.OK_OPTION) {
-                    // User selected an option from the dropdown
+
                     int selectedIndex = optionList.getSelectedIndex();
                     String selectedOption = options[selectedIndex];
 
@@ -120,16 +123,18 @@ public class AirlineManagementSystem {
                     // User canceled the dialog
                     System.out.println("Dialog canceled");
                 }
-            } else if (option == 2) {
+            } 
+            
+            
+                else if (option == 2) {
 
 
 
-
-                String[] optionDepart = {"KLIA2", "Johor","Kedah"};
+                String[] optionDepart = {"KLIA2", "Johor","Sabah"};
                 JComboBox<String> optionDepartList = new JComboBox<>(optionDepart);
                 optionDepartList.setSelectedIndex(0);
                 
-                String[] optionArrival = {"KLIA2", "Johor","Kedah"};
+                String[] optionArrival = {"KLIA2", "Johor","Sabah"};
                 JComboBox<String> optionArrivalList = new JComboBox<>(optionArrival);
                 optionArrivalList.setSelectedIndex(0);
                 
@@ -150,37 +155,69 @@ public class AirlineManagementSystem {
                 dialogPanel.add(optionArrivalList);
                 
                 int result = JOptionPane.showOptionDialog(null, dialogPanel, "Air UTM Booking System",
-                                                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
+                if (result == JOptionPane.OK_OPTION) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                StringBuilder airplaneInfo = new StringBuilder();
-
-                for (Flight flight : new Flight[]{flight1, flight2}) {
-                    airplaneInfo.append("Flight ").append(flight.getFlightNumber()).append(" : ").append(flight.getDepartureLocation()).append(" -> ").append(flight.getArrivalLocation()).append("\n");
-                    for (Airplane airplane : flight.getAirplanes()) {
-                        airplaneInfo.append("- ").append(airplane.getPlaneId()).append(" (").append(airplane.getPlaneFacturer()).append(", Capacity: ").append(airplane.getPlaneCapacity()).append(")\n");
+                    int selectedDepartIndex = optionDepartList.getSelectedIndex();
+                    String selectedDepartOption = optionDepart[selectedDepartIndex];
+                
+                    int selectedArrivalIndex = optionArrivalList.getSelectedIndex();
+                    String selectedArrivalOption = optionArrival[selectedArrivalIndex];
+                
+                    if (selectedDepartOption.equals("KLIA2") && selectedArrivalOption.equals("Johor")) {
+                        String flightInfo = "Flight " + flight2.getDepartureLocation() + " -> " + flight2.getArrivalLocation() + "\n\n";
+                    
+                        Object[][] tableData = new Object[flight2.getAirplanes().size() + flight3.getAirplanes().size()][6];
+                    
+                        int row = 0;
+                        for (Flight flight : Arrays.asList(flight2, flight3)) {
+                            for (Airplane airplane : flight.getAirplanes()) {
+                                tableData[row][0] = flight.getFlightNumber();
+                                tableData[row][1] = airplane.getPlaneId();
+                                tableData[row][2] = airplane.getPlaneFacturer();
+                                tableData[row][3] = airplane.getPlaneCapacity();
+                                tableData[row][4] = flight.getDepartureTime();
+                                tableData[row][5] = flight.getArrivalTime();
+                                row++;
+                            }
+                        }
+                    
+                        String[] columnNames = {"Flight No.","Plane ID", "Manufacturer", "Capacity", "Departure", "Arrival"};
+                    
+                        JTable table = new JTable(tableData, columnNames);
+                        JScrollPane scrollPane = new JScrollPane(table);
+                    
+                        Object[] messagee = {flightInfo, scrollPane};
+                        JOptionPane.showMessageDialog(null, messagee, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    airplaneInfo.append("\n");
+                    
+                    else if (selectedDepartOption.equals("Johor") && selectedArrivalOption.equals("KLIA2")) {
+
+                        StringBuilder airplaneInfo = new StringBuilder();
+
+                        for (Flight flight : new Flight[]{flight1}) {
+                                airplaneInfo.append("Flight ").append(flight.getFlightNumber()).append(" : ").append(flight.getDepartureLocation()).append(" -> ").append(flight.getArrivalLocation()).append("\n");
+                                for (Airplane airplane : flight.getAirplanes()) {
+                                    airplaneInfo.append("- ").append(airplane.getPlaneId()).append(" (").append(airplane.getPlaneFacturer()).append(", Capacity: ").append(airplane.getPlaneCapacity()).append(")\n");
+                                }
+                                airplaneInfo.append("\n");
+                        }
+                        JOptionPane.showMessageDialog(null, airplaneInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+
+
+                    } else {
+                        // Handle any other combination of departure and arrival locations
+                        System.out.println("Departure: " + selectedDepartOption + ", Arrival: " + selectedArrivalOption);
+                    }
+                } else {
+                    // User canceled the dialog
+                    System.out.println("Dialog canceled");
                 }
 
-                JOptionPane.showMessageDialog(null, airplaneInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+
+                
+                
 
             } else if (option == 3) {
                 // Booking a flight
