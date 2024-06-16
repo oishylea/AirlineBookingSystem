@@ -194,16 +194,30 @@ public class AirlineManagementSystem {
                     
                     else if (selectedDepartOption.equals("Johor") && selectedArrivalOption.equals("KLIA2")) {
 
-                        StringBuilder airplaneInfo = new StringBuilder();
-
-                        for (Flight flight : new Flight[]{flight1}) {
-                                airplaneInfo.append("Flight ").append(flight.getFlightNumber()).append(" : ").append(flight.getDepartureLocation()).append(" -> ").append(flight.getArrivalLocation()).append("\n");
-                                for (Airplane airplane : flight.getAirplanes()) {
-                                    airplaneInfo.append("- ").append(airplane.getPlaneId()).append(" (").append(airplane.getPlaneFacturer()).append(", Capacity: ").append(airplane.getPlaneCapacity()).append(")\n");
-                                }
-                                airplaneInfo.append("\n");
+                        String flightInfo = "Flight " + flight1.getDepartureLocation() + " -> " + flight1.getArrivalLocation() + "\n\n";
+                    
+                        Object[][] tableData = new Object[flight1.getAirplanes().size()][6];
+                    
+                        int row = 0;
+                        for (Flight flight : Arrays.asList(flight1)) {
+                            for (Airplane airplane : flight.getAirplanes()) {
+                                tableData[row][0] = flight.getFlightNumber();
+                                tableData[row][1] = airplane.getPlaneId();
+                                tableData[row][2] = airplane.getPlaneFacturer();
+                                tableData[row][3] = airplane.getPlaneCapacity();
+                                tableData[row][4] = flight.getDepartureTime();
+                                tableData[row][5] = flight.getArrivalTime();
+                                row++;
+                            }
                         }
-                        JOptionPane.showMessageDialog(null, airplaneInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                    
+                        String[] columnNames = {"Flight No.","Plane ID", "Manufacturer", "Capacity", "Departure", "Arrival"};
+                    
+                        JTable table = new JTable(tableData, columnNames);
+                        JScrollPane scrollPane = new JScrollPane(table);
+                    
+                        Object[] messagee = {flightInfo, scrollPane};
+                        JOptionPane.showMessageDialog(null, messagee, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
 
                     } else {
