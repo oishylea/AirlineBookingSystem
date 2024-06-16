@@ -290,11 +290,11 @@ public class AirlineManagementSystem {
 
             else if (option == 7) {
                 // View Crew Member List
-                StringBuilder crewInfo = new StringBuilder("Crew Member List:\n");
+                StringBuilder mealInfo = new StringBuilder("Meal List:\n");
                 for (CrewMember crewMember : crewMembers) {
-                    crewInfo.append(crewMember.getName()).append(" - ").append(crewMember.getRole()).append("\n");
+                    mealInfo.append(crewMember.getName()).append(" - ").append(crewMember.getRole()).append("\n");
                 }
-                JOptionPane.showMessageDialog(null, crewInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, mealInfo.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
             }
         }  // The scanner will be closed automatically here
     }
