@@ -208,7 +208,7 @@ public class AirlineManagementSystem {
                                 tableData[row][4] = flight.getDepartureTime();
                                 tableData[row][5] = flight.getArrivalTime();
                                 row++;
-                            }
+                              }
                         }
                     
                         String[] columnNames = {"Flight No.","Plane ID", "Manufacturer", "Capacity", "Departure", "Arrival"};
@@ -221,8 +221,7 @@ public class AirlineManagementSystem {
 
 
                     } else {
-                        // Handle any other combination of departure and arrival locations
-                        System.out.println("Departure: " + selectedDepartOption + ", Arrival: " + selectedArrivalOption);
+                        JOptionPane.showMessageDialog(null, "No flight(s) available.", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     // User canceled the dialog
