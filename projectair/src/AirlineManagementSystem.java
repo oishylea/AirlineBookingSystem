@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+
 
 public class AirlineManagementSystem {
     public static void main(String[] args) {
@@ -69,8 +72,17 @@ public class AirlineManagementSystem {
                 JComboBox<String> optionList = new JComboBox<>(options);
                 optionList.setSelectedIndex(0);
 
-                int result = JOptionPane.showOptionDialog(null, optionList, "Air UTM Booking System",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                                        JPanel dialogPanel = new JPanel();
+                                        dialogPanel.setLayout(new BorderLayout());
+
+                                        JLabel textLabel = new JLabel("<html>Select Airline Company :<br><br></html>");
+                                        dialogPanel.add(textLabel, BorderLayout.NORTH);
+
+                                        dialogPanel.add(optionList, BorderLayout.CENTER);
+
+                                        int result = JOptionPane.showOptionDialog(null, dialogPanel, "Air UTM Booking System",
+                                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
 
                 if (result == JOptionPane.OK_OPTION) {
                     // User selected an option from the dropdown
@@ -80,23 +92,25 @@ public class AirlineManagementSystem {
                     if (selectedOption.equals("AirAsia")) {
                         StringBuilder displayAirplane1 = new StringBuilder();
                         for (Airplane airplane : airAsiaAirplanes) {
-                            displayAirplane1.append("ID: ").append(airplane.getPlaneId())
-                                           .append(", Model: ").append(airplane.getPlaneModel())
-                                           .append(", Capacity: ").append(airplane.getPlaneCapacity())
-                                           .append(", Active: ").append(airplane.getPlaneAvailability())
+                            displayAirplane1.append(airplane.getPlaneId())
+                                           .append(" - Model ").append(airplane.getPlaneModel())
+                                           .append(" - Capacity ").append(airplane.getPlaneCapacity())
+                                           .append(" - Availability ").append(airplane.getPlaneAvailability())
                                            .append("\n");
                         }
-                        JOptionPane.showMessageDialog(null, displayAirplane1.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "AirAsia Airline List\n\n"+displayAirplane1.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
                     } else if (selectedOption.equals("Firefly")) {
+
                         StringBuilder displayAirplane2 = new StringBuilder();
+
                         for (Airplane airplane : fireflyAirplanes) {
-                            displayAirplane2.append("ID: ").append(airplane.getPlaneId())
-                            .append(", Model: ").append(airplane.getPlaneModel())
-                            .append(", Capacity: ").append(airplane.getPlaneCapacity())
-                            .append(", Active: ").append(airplane.getPlaneAvailability())
+                            displayAirplane2.append(airplane.getPlaneId())
+                            .append(" - Model ").append(airplane.getPlaneModel())
+                            .append(" - Capacity ").append(airplane.getPlaneCapacity())
+                            .append(" - Availability ").append(airplane.getPlaneAvailability())
                             .append("\n");
                         }
-                        JOptionPane.showMessageDialog(null, displayAirplane2.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Firefly Airline List\n\n"+displayAirplane2.toString(), "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
                     }
             else {
                         // Handle unexpected option selection
@@ -107,6 +121,54 @@ public class AirlineManagementSystem {
                     System.out.println("Dialog canceled");
                 }
             } else if (option == 2) {
+
+
+
+
+                String[] optionDepart = {"KLIA2", "Johor","Kedah"};
+                JComboBox<String> optionDepartList = new JComboBox<>(optionDepart);
+                optionDepartList.setSelectedIndex(0);
+                
+                String[] optionArrival = {"KLIA2", "Johor","Kedah"};
+                JComboBox<String> optionArrivalList = new JComboBox<>(optionArrival);
+                optionArrivalList.setSelectedIndex(0);
+                
+                JPanel dialogPanel = new JPanel();
+                dialogPanel.setLayout(new GridLayout(3, 2, 8, 8)); // Use GridLayout with 2 rows and 2 columns
+                
+                JLabel textFlightSelectLabel = new JLabel("<html>Search Flight :<br><br></html>");
+                JLabel textFlightSelect2Label = new JLabel("<html><br></html>");
+                dialogPanel.add(textFlightSelectLabel);
+                dialogPanel.add(textFlightSelect2Label);
+
+                JLabel textDepartLabel = new JLabel("<html>Select Departure Location<br><br></html>");
+                dialogPanel.add(textDepartLabel);
+                dialogPanel.add(optionDepartList);
+                
+                JLabel textArrivalLabel = new JLabel("<html>Select Arrival Location<br><br></html>");
+                dialogPanel.add(textArrivalLabel);
+                dialogPanel.add(optionArrivalList);
+                
+                int result = JOptionPane.showOptionDialog(null, dialogPanel, "Air UTM Booking System",
+                                                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 StringBuilder airplaneInfo = new StringBuilder();
 
