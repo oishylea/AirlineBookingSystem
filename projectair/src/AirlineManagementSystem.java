@@ -53,9 +53,9 @@ public class AirlineManagementSystem {
         List<CrewMember> crewMembers = new ArrayList<>();
 
         try {
-            customers = Customer.loadCustomers("C:\\Users\\JEGANATH\\OneDrive\\Documents\\GitHub\\oop\\projectair\\src\\Customers.txt");
-            pilots = Pilot.loadPilots("C:\\Users\\JEGANATH\\OneDrive\\Documents\\GitHub\\oop\\projectair\\src\\pilots.txt");
-            crewMembers = CrewMember.loadCrewMembers("C:\\Users\\JEGANATH\\OneDrive\\Documents\\GitHub\\oop\\projectair\\src\\crew.text");
+            customers = Customer.loadCustomers("projectair/src/Customers.txt");
+            pilots = Pilot.loadPilots("projectair\\src\\pilots.txt");
+            crewMembers = CrewMember.loadCrewMembers("projectair\\src\\crew.txt");
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage());
