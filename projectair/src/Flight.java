@@ -9,6 +9,7 @@ public class Flight {
     private String departureLocation;
     private String arrivalLocation;
     private List<Airplane> airplanes;
+    private Gate gate;
 
     // Constructors
     public Flight() {
@@ -52,6 +53,8 @@ public class Flight {
     public String getDepartureLocation() { return departureLocation; }
     public String getArrivalLocation() { return arrivalLocation; }
     public List<Airplane> getAirplanes() { return airplanes; }
+    public Gate getGate() { return gate; }
+    
 
     public void setFlightNumber(String flightNumber) { this.flightNumber = flightNumber; }
     public void setDepartureTime(String departureTime) { this.departureTime = departureTime; }
@@ -59,4 +62,7 @@ public class Flight {
     public void setDepartureLocation(String departureLocation) { this.departureLocation = departureLocation; }
     public void setArrivalLocation(String arrivalLocation) { this.arrivalLocation = arrivalLocation; }
     public void setAirplanes(List<Airplane> airplanes) { this.airplanes = airplanes; }
+    public void setGate(Gate gate) { this.gate = gate; }
+
+
 }
