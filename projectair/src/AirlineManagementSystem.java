@@ -82,12 +82,13 @@ public class AirlineManagementSystem {
             JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
             String message1 = "[1] Display Airline List\n"
-                    + "[2] Display Flight List\n"
-                    + "[3] Book a Flight\n"
-                    + "[4] View Customer List\n"
-                    + "[5] View Pilot List\n"
-                    + "[6] View Crew Member List\n"
-                    + "[7] Meal";
+                + "[2] Display Flight List\n"
+                + "[3] Book a Flight\n"
+                + "[4] View Customer List\n"
+                + "[5] View Pilot List\n"
+                + "[6] View Crew Member List\n"
+                + "[7] Meal\n"
+                + "[8] Exit";
 
             String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
             int option = Integer.parseInt(optionInput);
@@ -346,7 +347,7 @@ public class AirlineManagementSystem {
                         JOptionPane.INFORMATION_MESSAGE);
             }
 
-            if (option == 7) {
+            else if (option == 7) {
                 // View Meal List
                 StringBuilder mealInfo = new StringBuilder("Meal List:\n");
                 for (Meal meal : new Meal[] { meal1, meal2, meal3, meal4, meal5 }) {
@@ -362,6 +363,16 @@ public class AirlineManagementSystem {
                 JOptionPane.showMessageDialog(null, mealInfo.toString(), "Air UTM Booking System",
                         JOptionPane.INFORMATION_MESSAGE);
             }
+
+            else if (option == 8) {
+                 JOptionPane.showMessageDialog(null, "Thank you for using Air UTM Booking System!", "Goodbye",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+            // Handle invalid option
+            JOptionPane.showMessageDialog(null, "Invalid option. Please select a valid option.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         } // The scanner will be closed automatically here
     }
