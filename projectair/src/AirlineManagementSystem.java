@@ -81,7 +81,8 @@ public class AirlineManagementSystem {
             String message = "Welcome to Air UTM Booking System !";
             JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
-            String message1 = "[1] Display Airline List\n"
+            while(true){            
+                String message1 = "[1] Display Airline List\n"
                 + "[2] Display Flight List\n"
                 + "[3] Book a Flight\n"
                 + "[4] View Customer List\n"
@@ -367,14 +368,16 @@ public class AirlineManagementSystem {
             else if (option == 8) {
                  JOptionPane.showMessageDialog(null, "Thank you for using Air UTM Booking System!", "Goodbye",
                     JOptionPane.INFORMATION_MESSAGE);
+                break;
+                   
 
         } else {
             // Handle invalid option
             JOptionPane.showMessageDialog(null, "Invalid option. Please select a valid option.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        } // The scanner will be closed automatically here
+        }
+     } // The scanner will be closed automatically here
     }
 
     private static Customer findCustomerByName(List<Customer> customers, String name) {
