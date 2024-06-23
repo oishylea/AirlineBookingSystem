@@ -81,6 +81,58 @@ public class AirlineManagementSystem {
             String message = "Welcome to Air UTM Booking System !";
             JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
 
+            // Sign-in Section
+            String[] signInOptions = { "Customer", "Pilot", "Crew Member" };
+            String signInRole = (String) JOptionPane.showInputDialog(null, "Sign in as:", "Sign In",
+                    JOptionPane.QUESTION_MESSAGE, null, signInOptions, signInOptions[0]);
+
+        if (signInRole == null) {
+            JOptionPane.showMessageDialog(null, "Sign-in canceled. Exiting system.");
+            return;
+}
+
+        String userName = JOptionPane.showInputDialog("Enter your name:");
+        if (userName == null || userName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Name cannot be empty. Exiting system.");
+            return;
+}
+
+        String userId = JOptionPane.showInputDialog("Enter your ID:");
+        if (userId == null || userId.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "ID cannot be empty. Exiting system.");
+        return;
+}
+
+        boolean signedIn = false;
+        switch (signInRole) {
+            case "Customer":
+                if (findCustomerByNameAndId(customers, userName, userId) != null) {
+                    signedIn = true;
+        }       else {
+                    JOptionPane.showMessageDialog(null, "Customer not found or ID does not match.");
+        }
+            break;
+        case "Pilot":
+                if (findPilotByNameAndId(pilots, userName, userId) != null) {
+                    signedIn = true;
+        }       else {
+                    JOptionPane.showMessageDialog(null, "Pilot not found or ID does not match.");
+        }
+        break;
+        case "Crew Member":
+                if (findCrewMemberByNameAndId(crewMembers, userName, userId) != null) {
+                signedIn = true;
+        }       else {
+                    JOptionPane.showMessageDialog(null, "Crew Member not found or ID does not match.");
+        }
+        break;
+}
+
+        if (!signedIn) {
+            JOptionPane.showMessageDialog(null, "Sign-in failed. Exiting system.");
+            return;
+}
+
             while(true){            
                 String message1 = "[1] Display Airline List\n"
                 + "[2] Display Flight List\n"
@@ -381,11 +433,40 @@ public class AirlineManagementSystem {
     }
 
     private static Customer findCustomerByName(List<Customer> customers, String name) {
+            for (Customer customer : customers) {
+                if (customer.getName().equalsIgnoreCase(name)) {
+                    return customer;
+                }
+            }
+            return null;
+        }
+
+
+    private static Customer findCustomerByNameAndId(List<Customer> customers, String name, String id) {
         for (Customer customer : customers) {
-            if (customer.getName().equalsIgnoreCase(name)) {
+            if (customer.getName().equalsIgnoreCase(name) && customer.getIdNumber().equalsIgnoreCase(id)) {
                 return customer;
             }
         }
         return null;
     }
+    
+    private static Pilot findPilotByNameAndId(List<Pilot> pilots, String name, String id) {
+        for (Pilot pilot : pilots) {
+            if (pilot.getName().equalsIgnoreCase(name) && pilot.getIdNumber().equalsIgnoreCase(id)) {
+                return pilot;
+            }
+        }
+        return null;
+    }
+    
+    private static CrewMember findCrewMemberByNameAndId(List<CrewMember> crewMembers, String name, String id) {
+        for (CrewMember crewMember : crewMembers) {
+            if (crewMember.getName().equalsIgnoreCase(name) && crewMember.getIdNumber().equalsIgnoreCase(id)) {
+                return crewMember;
+            }
+        }
+        return null;
+    }
 }
+
