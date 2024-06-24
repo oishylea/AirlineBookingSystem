@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "AirlineManagementSystem",
+            "request": "launch",
+            "mainClass": "AirlineManagementSystem",
+            "projectName": "oop_cccb8bcb"
+        },
+        {
+            "type": "java",
+            "name": "Inheritance",
+            "request": "launch",
+            "mainClass": "Inheritance",
+            "projectName": "oop_cccb8bcb"
+        },
+        {
+            "type": "java",
+            "name": "Options",
+            "request": "launch",
+            "mainClass": "Options",
+            "projectName": "oop_cccb8bcb"
+        },
+        {
+            "type": "java",
+            "name": "ShowOptionDialogExample",
+            "request": "launch",
+            "mainClass": "ShowOptionDialogExample",
+            "projectName": "oop_cccb8bcb"
+        }
+    ]
+}

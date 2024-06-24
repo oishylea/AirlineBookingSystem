@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.util.Date;
 
 public class AirlineManagementSystem {
     public static void main(String[] args) {
@@ -13,6 +15,7 @@ public class AirlineManagementSystem {
         Flight flight1 = new Flight(1, "Johor - KLIA2-12:00-14:30", "12:00", "14:30", "Johor", "KLIA 2");
         Flight flight2 = new Flight(2, "KLIA2 - Johor-08:00-10:30", "08:00", "10:30", "KLIA 2", "Johor");
         Flight flight3 = new Flight(3, "KLIA2 - Johor-11:30-14:00", "11:30", "14:00", "KLIA 2", "Johor");
+
 
         Airplane airplane1 = new Airplane(101, "Airbus A320-200", "AirAsia", 180, true);
         Airplane airplane2 = new Airplane(102, "Airbus A321neo", "AirAsia", 236, true);
@@ -69,7 +72,7 @@ public class AirlineManagementSystem {
         List<CrewMember> crewMembers = new ArrayList<>();
 
         try {
-            customers = Customer.loadCustomers("projectair/src/Customers.txt");
+            customers = Customer.loadCustomers("projectair\\src\\Customers.txt","projectair\\src\\bookings.txt");
             pilots = Pilot.loadPilots("projectair\\src\\pilots.txt");
             crewMembers = CrewMember.loadCrewMembers("projectair\\src\\crew.txt");
         } catch (IOException e) {
@@ -78,60 +81,40 @@ public class AirlineManagementSystem {
         }
 
         try (Scanner scanner = new Scanner(System.in)) { // Try-with-resources statement
-            String message = "Welcome to Air UTM Booking System !";
+            String message = "Welcome to Air UTM Booking System!";
             JOptionPane.showMessageDialog(null, message, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
-
-            // Sign-in Section
-            String[] signInOptions = { "Customer", "Pilot", "Crew Member" };
-            String signInRole = (String) JOptionPane.showInputDialog(null, "Sign in as:", "Sign In",
-                    JOptionPane.QUESTION_MESSAGE, null, signInOptions, signInOptions[0]);
-
-        if (signInRole == null) {
-            JOptionPane.showMessageDialog(null, "Sign-in canceled. Exiting system.");
-            return;
-}
-
-        String userName = JOptionPane.showInputDialog("Enter your name:");
-        if (userName == null || userName.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Name cannot be empty. Exiting system.");
-            return;
-}
-
-        String userId = JOptionPane.showInputDialog("Enter your ID:");
-        if (userId == null || userId.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "ID cannot be empty. Exiting system.");
-        return;
-}
-
-        boolean signedIn = false;
-        switch (signInRole) {
-            case "Customer":
-                if (findCustomerByNameAndId(customers, userName, userId) != null) {
-                    signedIn = true;
-        }       else {
-                    JOptionPane.showMessageDialog(null, "Customer not found or ID does not match.");
-        }
-            break;
-        case "Pilot":
-                if (findPilotByNameAndId(pilots, userName, userId) != null) {
-                    signedIn = true;
-        }       else {
-                    JOptionPane.showMessageDialog(null, "Pilot not found or ID does not match.");
-        }
-        break;
-        case "Crew Member":
-                if (findCrewMemberByNameAndId(crewMembers, userName, userId) != null) {
+        
+            // Sign-in Section for Crew Member
+            String welcomeMessage = "Welcome Crew Member";
+            JOptionPane.showMessageDialog(null, welcomeMessage, "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+        
+            String userName = JOptionPane.showInputDialog("Enter your username:");
+            if (userName == null || userName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Username cannot be empty. Exiting system.");
+                return;
+            }
+        
+            String userId = JOptionPane.showInputDialog("Enter your ID:");
+            if (userId == null || userId.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "ID cannot be empty. Exiting system.");
+                return;
+            }
+        
+            boolean signedIn = false;
+        
+            // Replace with your actual crew member authentication logic
+            if (findCrewMemberByNameAndId(crewMembers, userName, userId) != null) {
                 signedIn = true;
-        }       else {
-                    JOptionPane.showMessageDialog(null, "Crew Member not found or ID does not match.");
-        }
-        break;
-}
-
-        if (!signedIn) {
+                JOptionPane.showMessageDialog(null, "Login successful. Welcome, Crew Member!", "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Crew Member not found or ID does not match.");
+            }
+        
+            if (!signedIn) {
             JOptionPane.showMessageDialog(null, "Sign-in failed. Exiting system.");
             return;
 }
+
 
             while(true){            
                 String message1 = "[1] Display Airline List\n"
@@ -140,8 +123,9 @@ public class AirlineManagementSystem {
                 + "[4] View Customer List\n"
                 + "[5] View Pilot List\n"
                 + "[6] View Crew Member List\n"
-                + "[7] Meal\n"
-                + "[8] Exit";
+                + "[7] Book a Meal\n"
+                + "[8] Book a Baggage\n"
+                + "[9] Exit\n";
 
             String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
             int option = Integer.parseInt(optionInput);
@@ -311,66 +295,101 @@ public class AirlineManagementSystem {
 
             } else if (option == 3) {
                 // Booking a flight
-                String[] flightOptions = { flight1.getFlightNumber(), flight2.getFlightNumber(), flight3.getFlightNumber() };
-                String flightNumber = (String) JOptionPane.showInputDialog(null, "Select Flight Number:",
-                        "Flight Selection", JOptionPane.QUESTION_MESSAGE, null, flightOptions, flightOptions[0]);
-            
-                Flight selectedFlight = null;
-                for (Flight flight : new Flight[] { flight1, flight2, flight3 }) {
-                    if (flight.getFlightNumber().equals(flightNumber)) {
-                        selectedFlight = flight;
-                        break;
+                try {
+                    List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
+                    if (custo == null || custo.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No customers loaded", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
-                }
             
-                if (selectedFlight != null) {
-                    // Airplane selection
-                    List<Airplane> airplanes = selectedFlight.getAirplanes();
-                    String[] airplaneOptions = new String[airplanes.size()];
-                    for (int i = 0; i < airplanes.size(); i++) {
-                        airplaneOptions[i] = airplanes.get(i).getPlaneFacturer() + " (" + airplanes.get(i).getPlaneModel() + ")";
+                    // Select Customer Name
+                    String[] customerNames = new String[custo.size()];
+                    for (int i = 0; i < custo.size(); i++) {
+                        customerNames[i] = custo.get(i).getName();
                     }
-                    String selectedAirplane = (String) JOptionPane.showInputDialog(null, "Select Airplane:",
-                            "Airplane Selection", JOptionPane.QUESTION_MESSAGE, null, airplaneOptions, airplaneOptions[0]);
+                    String customerName = (String) JOptionPane.showInputDialog(null, "Select Customer:", "Customer Selection", JOptionPane.QUESTION_MESSAGE, null, customerNames, customerNames[0]);
             
-                    if (selectedAirplane != null) {
-                        String customerName = JOptionPane.showInputDialog("Enter your name:");
-                        String seatNumber = JOptionPane.showInputDialog("Enter seat number:");
-                        Customer customer = findCustomerByName(customers, customerName);
-                        if (customer == null) {
-                            JOptionPane.showMessageDialog(null, "Customer not found.");
-                            return;
+                    Customer selectedCustomer = null;
+                    for (Customer customer : custo) {
+                        if (customer.getName().equals(customerName)) {
+                            selectedCustomer = customer;
+                            break;
+                        }
+                    }
+            
+                    if (selectedCustomer != null) {
+                        // Select Flight Number
+                        String[] flightOptions = { flight1.getFlightNumber(), flight2.getFlightNumber(), flight3.getFlightNumber() };
+                        String flightNumber = (String) JOptionPane.showInputDialog(null, "Select Flight Number:",
+                                "Flight Selection", JOptionPane.QUESTION_MESSAGE, null, flightOptions, flightOptions[0]);
+            
+                        Flight selectedFlight = null;
+                        for (Flight flight : new Flight[] { flight1, flight2, flight3 }) {
+                            if (flight.getFlightNumber().equals(flightNumber)) {
+                                selectedFlight = flight;
+                                break;
+                            }
                         }
             
-                        Ticket ticket = new Ticket(1, seatNumber, "Economy", 299.99, null); // Temporary null for booking
-                        Booking booking = new Booking(1, "2024-06-04", "Economy", selectedFlight, customer);
-                        ticket.setBooking(booking); // Set the booking for the ticket
+                        if (selectedFlight != null) {
+                            // Airplane selection
+                            List<Airplane> airplanes = selectedFlight.getAirplanes();
+                            String[] airplaneOptions = new String[airplanes.size()];
+                            for (int i = 0; i < airplanes.size(); i++) {
+                                airplaneOptions[i] = airplanes.get(i).getPlaneFacturer() + " (" + airplanes.get(i).getPlaneModel() + ")";
+                            }
+                            String selectedAirplane = (String) JOptionPane.showInputDialog(null, "Select Airplane:",
+                                    "Airplane Selection", JOptionPane.QUESTION_MESSAGE, null, airplaneOptions, airplaneOptions[0]);
             
-                        Object[] options = { "Proceed with Payment" };
-                        int choice = JOptionPane.showOptionDialog(null,
-                                "------ Flight booking details ------\n\nName:\t" + customer.getName() +
-                                        "\nAge:\t\t" + customer.getAge() +
-                                        "\nGender:\t\t" + customer.getGender() +
-                                        "\nPassport Number : " + customer.getPassportNumber() +
-                                        "\n\n" + selectedFlight.getDepartureLocation() + " -> " + selectedFlight.getArrivalLocation() +
-                                        "\nAirplane:\t" + selectedAirplane +
-                                        "\nSeat Number:\t" + ticket.getSeatNumber() +
-                                        "\nClass:\t" + booking.getSeatCategory() +
-                                        "\nGate:\t" + selectedFlight.getGate().getGateNumber() + " Terminal " + selectedFlight.getGate().getTerminal(),
-                                "Flight Booking Details", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                                null, options, options[0]);
+                            if (selectedAirplane != null) {
+                                String seatNumber = JOptionPane.showInputDialog("Enter seat number:");
+                                Ticket ticket = new Ticket(1, seatNumber, "Economy", 299.99, null); // Temporary null for booking
+                                Booking booking = new Booking("2024-06-04", "Economy", selectedFlight, selectedCustomer);
+                                booking.saveBookingToFile("C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
+                                ticket.setBooking(booking); // Set the booking for the ticket
             
-                        if (choice == 0) {
-                            // Code to handle payment
-                            JOptionPane.showMessageDialog(null, "Proceeding to payment...");
+                                Object[] options = { "Proceed with Payment" };
+                                int choice = JOptionPane.showOptionDialog(null,
+                                        "------ Flight booking details ------\n\nName:\t" + selectedCustomer.getName() +
+                                                "\nAge:\t\t" + selectedCustomer.getAge() +
+                                                "\nGender:\t\t" + selectedCustomer.getGender() +
+                                                "\nPassport Number : " + selectedCustomer.getPassportNumber() +
+                                                "\n\n" + selectedFlight.getDepartureLocation() + " -> " + selectedFlight.getArrivalLocation() +
+                                                "\nAirplane:\t" + selectedAirplane +
+                                                "\nSeat Number:\t" + ticket.getSeatNumber() +
+                                                "\nClass:\t" + booking.getSeatCategory() +
+                                                "\nGate:\t" + selectedFlight.getGate().getGateNumber() + " Terminal " + selectedFlight.getGate().getTerminal(),
+                                        "Flight Booking Details", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                                        null, options, options[0]);
+            
+                                if (choice == 0) {
+                                    // Code to handle payment
+                                    JOptionPane.showMessageDialog(null, "Proceeding to payment...");
+                                    // Get payment details
+                                    String paymentMethod = (String) JOptionPane.showInputDialog(null, "Select payment method:",
+                                            "Payment Method", JOptionPane.QUESTION_MESSAGE, null, new String[] {"Credit Card", "Debit Card", "E-Wallet"}, "Credit Card");
+                                    double amount = ticket.getTicketPrice(); // Assuming the ticket price is the amount to be paid
+                                    String paymentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); // Current date
+            
+                                    // Create a new payment
+                                    Payment payment = new Payment(1, amount, paymentDate, paymentMethod, booking);
+                                    payment.confirmPayment();
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Airplane selection cancelled.");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Flight not found.");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Airplane selection cancelled.");
+                        JOptionPane.showMessageDialog(null, "Customer not found.");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Flight not found.");
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Error loading customers and bookings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            
+            
             else if (option == 4) {
                 // View Customer List
                 StringBuilder customerInfo = new StringBuilder("Customer List:\n");
@@ -401,64 +420,238 @@ public class AirlineManagementSystem {
             }
 
             else if (option == 7) {
-                // View Meal List
-                StringBuilder mealInfo = new StringBuilder("Meal List:\n");
-                for (Meal meal : new Meal[] { meal1, meal2, meal3, meal4, meal5 }) {
-                    mealInfo.append(meal.getMealId())
-                            .append(" - ")
-                            .append(meal.getMealType())
-                            .append(" (")
-                            .append(meal.getDietaryRestrictions())
-                            .append(") - RM")
-                            .append(meal.getPrice())
-                            .append("\n");
+                // Load customers and bookings
+                try {
+                    List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
+                    if (custo == null || custo.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No customers loaded", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+            
+                    String[] customerNames = new String[custo.size()];
+                    for (int i = 0; i < custo.size(); i++) {
+                        customerNames[i] = custo.get(i).getName();
+                    }
+            
+                    String input = (String) JOptionPane.showInputDialog(null, "Select a customer", "Select Customer", JOptionPane.QUESTION_MESSAGE, null, customerNames, customerNames[0]);
+                    if (input != null) {
+                        Customer selectedCustomer = null;
+                        for (Customer customer : custo) {
+                            if (customer.getName().equals(input)) {
+                                selectedCustomer = customer;
+                                break;
+                            }
+                        }
+            
+                        if (selectedCustomer != null) {
+                            List<Booking> bookings = selectedCustomer.getBookings();
+                            if (bookings.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "No bookings found for selected customer", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+            
+                            String[] bookingDescriptions = new String[bookings.size()];
+                            for (int i = 0; i < bookings.size(); i++) {
+                                bookingDescriptions[i] = bookings.get(i).getDescription();
+                            }
+            
+                            String bookingInput = (String) JOptionPane.showInputDialog(null, "Select a booking", "Select Booking", JOptionPane.QUESTION_MESSAGE, null, bookingDescriptions, bookingDescriptions[0]);
+                            if (bookingInput != null) {
+                                Booking selectedBooking = null;
+                                for (Booking booking : bookings) {
+                                    if (booking.getDescription().equals(bookingInput)) {
+                                        selectedBooking = booking;
+                                        break;
+                                    }
+                                }
+            
+                                if (selectedBooking != null) {
+                                    StringBuilder mealInfo = new StringBuilder("Meal List:\n");
+                                    Meal[] meals = { meal1, meal2, meal3, meal4, meal5 };
+                                    for (Meal meal : meals) {
+                                        mealInfo.append(meal.getMealId())
+                                                .append(" - ")
+                                                .append(meal.getMealType())
+                                                .append(" (")
+                                                .append(meal.getDietaryRestrictions())
+                                                .append(") - RM")
+                                                .append(meal.getPrice())
+                                                .append("\n");
+                                    }
+            
+                                    String mealInput = (String) JOptionPane.showInputDialog(null, mealInfo.toString() + "\nSelect a meal by ID:", "Select Meal", JOptionPane.QUESTION_MESSAGE, null, null, null);
+                                    if (mealInput != null) {
+                                        Meal selectedMeal = null;
+                                        try {
+                                            int mealId = Integer.parseInt(mealInput);
+                                            for (Meal meal : meals) {
+                                                if (meal.getMealId() == mealId) {
+                                                    selectedMeal = meal;
+                                                    break;
+                                                }
+                                            }
+            
+                                            if (selectedMeal != null) {
+                                                selectedMeal.setCustomer(selectedCustomer);
+                                                selectedBooking.addMeal(selectedMeal);
+            
+                                                JOptionPane.showMessageDialog(null, "Meal ordered successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                                // Print customer, booking, and meal details
+                                                StringBuilder details = new StringBuilder();
+                                                details.append("Customer Details:\n");
+                                                details.append("Name: ").append(selectedCustomer.getName()).append("\n");
+                                                details.append("Phone: ").append(selectedCustomer.getPhoneNumber()).append("\n\n");
+            
+                                                details.append("Booking Details:\n");
+                                                details.append("Description: ").append(selectedBooking.getDescription()).append("\n");
+                                                /*details.append("Departure: ").append(selectedBooking.getDeparture()).append("\n");
+                                                details.append("Arrival: ").append(selectedBooking.getArrival()).append("\n");
+                                                details.append("Date: ").append(selectedBooking.getDate()).append("\n");
+                                                details.append("Price: $").append(selectedBooking.getPrice()).append("\n\n");*/
+            
+                                                details.append("\nMeal Details:\n");
+                                                details.append("Meal ID: ").append(selectedMeal.getMealId()).append("\n");
+                                                details.append("Type: ").append(selectedMeal.getMealType()).append("\n");
+                                                details.append("Dietary Restrictions: ").append(selectedMeal.getDietaryRestrictions()).append("\n");
+                                                details.append("Price: RM").append(selectedMeal.getPrice()).append("\n");
+            
+                                                JOptionPane.showMessageDialog(null, details.toString(), "Booking Details", JOptionPane.INFORMATION_MESSAGE);
+                                            } else {
+                                                JOptionPane.showMessageDialog(null, "Meal not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            JOptionPane.showMessageDialog(null, "Invalid meal ID input. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Booking not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Customer not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Error loading customers and bookings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null, mealInfo.toString(), "Air UTM Booking System",
-                        JOptionPane.INFORMATION_MESSAGE);
             }
+            else if (option == 8) { // Add baggage details for existing booking
+                try {
+                    List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
+                    if (custo == null || custo.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No customers loaded", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+            
+                    String[] customerNames = new String[custo.size()];
+                    for (int i = 0; i < custo.size(); i++) {
+                        customerNames[i] = custo.get(i).getName();
+                    }
+            
+                    String input = (String) JOptionPane.showInputDialog(null, "Select a customer", "Select Customer", JOptionPane.QUESTION_MESSAGE, null, customerNames, customerNames[0]);
+                    if (input != null) {
+                        Customer selectedCustomer = null;
+                        for (Customer customer : customers) {
+                            if (customer.getName().equals(input)) {
+                                selectedCustomer = customer;
+                                break;
+                            }
+                        }
+            
+                        if (selectedCustomer != null) {
+                            List<Booking> bookings = selectedCustomer.getBookings();
+                            if (bookings.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "No bookings found for selected customer", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+            
+                            String[] bookingDescriptions = new String[bookings.size()];
+                            for (int i = 0; i < bookings.size(); i++) {
+                                bookingDescriptions[i] = bookings.get(i).getDescription();
+                            }
+            
+                            String bookingInput = (String) JOptionPane.showInputDialog(null, "Select a booking", "Select Booking", JOptionPane.QUESTION_MESSAGE, null, bookingDescriptions, bookingDescriptions[0]);
+                            if (bookingInput != null) {
+                                Booking selectedBooking = null;
+                                for (Booking booking : bookings) {
+                                    if (booking.getDescription().equals(bookingInput)) {
+                                        selectedBooking = booking;
+                                        break;
+                                    }
+                                }
+            
+                                if (selectedBooking != null) {
+                                    String weightInput = JOptionPane.showInputDialog("Enter baggage weight (in kg):");
+                                    try {
+                                        double weight = Double.parseDouble(weightInput);
+                                        String baggageType = (String) JOptionPane.showInputDialog(null, "Select baggage type:", "Baggage Type", JOptionPane.QUESTION_MESSAGE, null, new String[]{"Checked", "Hand Carry", "Special"}, "Checked");
+            
+                                        Baggage baggage = new Baggage(1, weight, baggageType, selectedBooking);
+                                        selectedBooking.addBaggage(baggage);
+            
+                                        JOptionPane.showMessageDialog(null, "Baggage details added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                        // Print customer, booking, and baggage details
+                                        StringBuilder details = new StringBuilder();
+                                        details.append("Customer Details:\n");
+                                        details.append("Name: ").append(selectedCustomer.getName()).append("\n");
+                                        details.append("Phone: ").append(selectedCustomer.getPhoneNumber()).append("\n\n");
 
-            else if (option == 8) {
-                 JOptionPane.showMessageDialog(null, "Thank you for using Air UTM Booking System!", "Goodbye",
-                    JOptionPane.INFORMATION_MESSAGE);
-                break;
-                   
+                                        details.append("Booking Details:\n");
+                                        details.append("Description: ").append(selectedBooking.getDescription()).append("\n");
+                                        /*details.append("Departure: ").append(selectedBooking.getDeparture()).append("\n");
+                                        details.append("Arrival: ").append(selectedBooking.getArrival()).append("\n");
+                                        details.append("Date: ").append(selectedBooking.getDate()).append("\n");
+                                        details.append("Price: $").append(selectedBooking.getPrice()).append("\n\n");*/
 
-        } else {
+                                        details.append("Baggage Details:\n");
+                                        details.append("Weight: ").append(baggage.getWeight()).append(" kg\n");
+                                        details.append("Type: ").append(baggage.getBaggageType()).append("\n");
+
+                                        JOptionPane.showMessageDialog(null, details.toString(), "Booking Details", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                    
+                                     catch (NumberFormatException e) {
+                                        JOptionPane.showMessageDialog(null, "Invalid weight input. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Booking not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                                        
+                                    
+                                } } else {
+                                    JOptionPane.showMessageDialog(null, "Customer not found.", "Error",
+                                            JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Invalid customer selection: " + input, "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        } }
+                     catch (IOException e) {
+                        System.out.println("Error loading customers, please try" + e.getMessage());
+                    }  
+               
+        } 
+
+        else if (option == 9) {
+             JOptionPane.showMessageDialog(null, "Thank you for using Air UTM Booking System!", "Goodbye",
+                JOptionPane.INFORMATION_MESSAGE);
+            break;
+               
+
+    } else {
             // Handle invalid option
             JOptionPane.showMessageDialog(null, "Invalid option. Please select a valid option.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
         }
      } // The scanner will be closed automatically here
-    }
-
-    private static Customer findCustomerByName(List<Customer> customers, String name) {
-            for (Customer customer : customers) {
-                if (customer.getName().equalsIgnoreCase(name)) {
-                    return customer;
-                }
-            }
-            return null;
-        }
-
-
-    private static Customer findCustomerByNameAndId(List<Customer> customers, String name, String id) {
-        for (Customer customer : customers) {
-            if (customer.getName().equalsIgnoreCase(name) && customer.getIdNumber().equalsIgnoreCase(id)) {
-                return customer;
-            }
-        }
-        return null;
-    }
     
-    private static Pilot findPilotByNameAndId(List<Pilot> pilots, String name, String id) {
-        for (Pilot pilot : pilots) {
-            if (pilot.getName().equalsIgnoreCase(name) && pilot.getIdNumber().equalsIgnoreCase(id)) {
-                return pilot;
-            }
-        }
-        return null;
-    }
+
+    
+
+
+
     
     private static CrewMember findCrewMemberByNameAndId(List<CrewMember> crewMembers, String name, String id) {
         for (CrewMember crewMember : crewMembers) {
