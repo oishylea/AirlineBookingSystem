@@ -29,11 +29,16 @@ public class AirlineManagementSystem {
 
         List<Airplane> airAsiaAirplanes = new ArrayList<>();
         List<Airplane> fireflyAirplanes = new ArrayList<>();
-        for (Airplane airplane : new Airplane[] { airplane1, airplane2, airplane3, airplane4, airplane5 }) {
+        List<Airplane> localAirplanes = new ArrayList<>();
+
+        for (Airplane airplane : new Airplane[] { airplane1, airplane2, airplane3, airplane4, airplane5,
+                                                    airplane6, airplane7, airplane8, airplane9 }) {
             if (airplane.getPlaneFacturer().equals("AirAsia")) {
                 airAsiaAirplanes.add(airplane);
             } else if (airplane.getPlaneFacturer().equals("Firefly")) {
                 fireflyAirplanes.add(airplane);
+            } else if (airplane.getPlaneFacturer().equals("Local Airlines")){
+                localAirplanes.add(airplane);
             }
         }
 
@@ -105,7 +110,7 @@ public class AirlineManagementSystem {
             // Replace with your actual crew member authentication logic
             if (findCrewMemberByNameAndId(crewMembers, userName, userId) != null) {
                 signedIn = true;
-                JOptionPane.showMessageDialog(null, "Login successful. Welcome, Crew Member!", "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Login successful.\n Welcome, Crew Member!", "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Crew Member not found or ID does not match.");
             }
@@ -117,22 +122,24 @@ public class AirlineManagementSystem {
 
 
             while(true){            
-                String message1 = "[1] Display Airline List\n"
-                + "[2] Display Flight List\n"
-                + "[3] Book a Flight\n"
+                String message1 = 
+                 "[1] Book a Flight\n" 
+                + "[2] Book a Meal\n"
+                + "[3] Check In a Baggage\n"
                 + "[4] View Customer List\n"
                 + "[5] View Pilot List\n"
                 + "[6] View Crew Member List\n"
-                + "[7] Book a Meal\n"
-                + "[8] Book a Baggage\n"
-                + "[9] Exit\n";
+                + "[7] Display Airline List\n"
+                + "[8] Display Flight List\n"                
+                + "[9] Display Booking\n"
+                + "[10] Exit\n";
 
             String optionInput = JOptionPane.showInputDialog(null, message1, "Enter your option");
             int option = Integer.parseInt(optionInput);
 
-            if (option == 1) {
+            if (option == 7) {
 
-                String[] options = { "AirAsia", "Firefly" };
+                String[] options = { "AirAsia", "Firefly" ,"Local Airlines"};
                 JComboBox<String> optionList = new JComboBox<>(options);
                 optionList.setSelectedIndex(0);
 
@@ -176,6 +183,19 @@ public class AirlineManagementSystem {
                         }
                         JOptionPane.showMessageDialog(null, "Firefly Airline List\n\n" + displayAirplane2.toString(),
                                 "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (selectedOption.equals("Local Airlines")) {
+
+                        StringBuilder displayAirplane3 = new StringBuilder();
+
+                        for (Airplane airplane : localAirplanes) {
+                            displayAirplane3.append(airplane.getPlaneId())
+                                    .append(" - Model ").append(airplane.getPlaneModel())
+                                    .append(" - Capacity ").append(airplane.getPlaneCapacity())
+                                    .append(" - Availability ").append(airplane.getPlaneAvailability())
+                                    .append("\n");
+                        }
+                        JOptionPane.showMessageDialog(null, "Local Airline List\n\n" + displayAirplane3.toString(),
+                                "Air UTM Booking System", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         // Handle unexpected option selection
                         System.out.println("Unknown option selected");
@@ -186,7 +206,7 @@ public class AirlineManagementSystem {
                 }
             }
 
-            else if (option == 2) {
+            else if (option == 8) {
 
                 String[] optionDepart = { "KLIA2", "Johor", "Sabah" };
                 JComboBox<String> optionDepartList = new JComboBox<>(optionDepart);
@@ -293,7 +313,7 @@ public class AirlineManagementSystem {
                     System.out.println("Dialog canceled");
                 }
 
-            } else if (option == 3) {
+            } else if (option == 1) {
                 // Booking a flight
                 try {
                     List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
@@ -419,7 +439,7 @@ public class AirlineManagementSystem {
                         JOptionPane.INFORMATION_MESSAGE);
             }
 
-            else if (option == 7) {
+            else if (option == 2) {
                 // Load customers and bookings
                 try {
                     List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
@@ -535,7 +555,7 @@ public class AirlineManagementSystem {
                     JOptionPane.showMessageDialog(null, "Error loading customers and bookings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            else if (option == 8) { // Add baggage details for existing booking
+            else if (option == 32) { // Add baggage details for existing booking
                 try {
                     List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
                     if (custo == null || custo.isEmpty()) {
@@ -632,7 +652,81 @@ public class AirlineManagementSystem {
                
         } 
 
-        else if (option == 9) {
+        else if (option == 9) { // Display booking details for a selected customer
+            try {
+                List<Customer> custo = Customer.loadCustomers("C:\\xampp\\htdocs\\oop\\projectair\\src\\customers.txt", "C:\\xampp\\htdocs\\oop\\projectair\\src\\bookings.txt");
+                if (custo == null || custo.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No customers loaded", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+        
+                String[] customerNames = new String[custo.size()];
+                for (int i = 0; i < custo.size(); i++) {
+                    customerNames[i] = customers.get(i).getName();
+                }
+        
+                String input = (String) JOptionPane.showInputDialog(null, "Select a customer", "Select Customer", JOptionPane.QUESTION_MESSAGE, null, customerNames, customerNames[0]);
+                if (input != null) {
+                    Customer selectedCustomer = null;
+                    for (Customer customer : customers) {
+                        if (customer.getName().equals(input)) {
+                            selectedCustomer = customer;
+                            break;
+                        }
+                    }
+        
+                    if (selectedCustomer != null) {
+                        List<Booking> bookings = selectedCustomer.getBookings();
+                        if (bookings.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "No bookings found for selected customer", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+        
+                        String[] bookingDescriptions = new String[bookings.size()];
+                        for (int i = 0; i < bookings.size(); i++) {
+                            bookingDescriptions[i] = bookings.get(i).getDescription();
+                        }
+        
+                        String bookingInput = (String) JOptionPane.showInputDialog(null, "Select a booking", "Select Booking", JOptionPane.QUESTION_MESSAGE, null, bookingDescriptions, bookingDescriptions[0]);
+                        if (bookingInput != null) {
+                            Booking selectedBooking = null;
+                            for (Booking booking : bookings) {
+                                if (booking.getDescription().equals(bookingInput)) {
+                                    selectedBooking = booking;
+                                    break;
+                                }
+                            }
+        
+                            if (selectedBooking != null) {
+                                StringBuilder details = new StringBuilder();
+                                details.append("Customer Details:\n");
+                                details.append("Name: ").append(selectedCustomer.getName()).append("\n");
+                                details.append("Phone: ").append(selectedCustomer.getPhoneNumber()).append("\n\n");
+        
+                                details.append("Booking Details:\n");
+                                details.append("Description: ").append(selectedBooking.getDescription()).append("\n");
+                                // Add more booking details here as needed
+        
+                                JOptionPane.showMessageDialog(null, details.toString(), "Booking Details", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Booking not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Invalid booking selection", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Customer not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid customer selection", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error loading customers, please try again: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+
+        else if (option == 10) {
              JOptionPane.showMessageDialog(null, "Thank you for using Air UTM Booking System!", "Goodbye",
                 JOptionPane.INFORMATION_MESSAGE);
             break;

@@ -6,3 +6,5 @@
 11,Jane Smith,KLIA2 - Johor-11:30-14:00,Economy
 13,Robert Brown,KLIA2 - Johor-11:30-14:00,Economy
 15,Emily White,KLIA2 - Johor-08:00-10:30,Economy
+17,John Doe,Johor - KLIA2-12:00-14:30,Economy
+19,John Doe,KLIA2 - Johor-11:30-14:00,Economy
