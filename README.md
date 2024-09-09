@@ -2,20 +2,31 @@
 
 # Airline Booking System
 
-thevan 
-- person
-- customer
-- pilot
-- crewMember
+## Group Members
+- Nik Zulaikhaa
+- Thevan Raju
+- Aliatul Izzah
 
-izzah
-- flight
-- gate
-- airplane
-- meal
+## Problem Definition
 
-nik
-- booking
-- baggage
-- ticket
-- payment
+The airline industry faces significant challenges in traditional booking processes, including long wait times, manual paperwork, and high potential for errors. These inefficiencies can lead to a poor passenger experience, decreased customer satisfaction, and lost revenue opportunities. This project aims to develop an Airline Reservation System (ARS) that addresses these issues by providing an efficient, user-friendly platform for managing flight bookings and enhancing the overall passenger experience.
+
+## Problem Analysis
+
+### Key Issues:
+1. **Inefficiency**: Traditional booking methods are time-consuming and often result in long queues.
+2. **Errors**: Manual management of customer information and reservations can lead to mistakes.
+3. **Customer Experience**: A lack of real-time updates and personalized services can diminish passenger satisfaction.
+4. **Data Management**: There is a need for a centralized system to manage flight information, customer data, and reservations.
+
+### Objectives:
+- Streamline the booking process to reduce wait times and errors.
+- Implement a user-friendly interface for customers to easily navigate the system.
+
+### Task Distribution
+
+| Member Name                   | Assigned Class                   |
+|-------------------------------|-----------------------------------|
+| Thevan Raju     | - Person<br>- Customer<br>- Pilot<br>- CrewMember |
+| Aliatul Izzah   | - Flight<br>- Gate<br>- Airplane<br>- Meal      |
+| Nik Zulaikhaa | - Booking<br>- Baggage<br>- Ticket<br>- Payment |
